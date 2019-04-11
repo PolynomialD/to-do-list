@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/PolynomialD/to-do-list/issues"
   },
-  "homepage": "https://github.com/PolynomialD/to-do-list#readme"
+  "homepage": "https://github.com/PolynomialD/to-do-list#readme",
+  "dependencies": {
+    "electron": "^4.1.4"
+  }
 }
