@@ -3,12 +3,27 @@
 <head>
 </head>
 <body>
+    <form>
+        <div>
+          <label>Enter new Todo</label>
+          <input autofocus />
+        </div>
+        <button type="submit">Add</button>
+      </form>
+    
   <h1>todo list</h1>
   <ul></ul>
 
   <script>
     const electron = require('electron')
     const { ipcRenderer } = electron
+
+    document.querySelector('form').addEventListener('submit', (event) => {
+      event.preventDefault()
+
+      const value = document.querySelector('input').value
+      ipcRenderer.send('todo:add', value)
+    })
 
     ipcRenderer.on('todo:add', (event, todo) => {
       const li = document.createElement('li')

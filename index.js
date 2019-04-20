@@ -2,7 +2,7 @@ const electron = require('electron')
 
 const { app, BrowserWindow, Menu, ipcMain } = electron
 
-let mainWindow, addWindow
+let mainWindow
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
@@ -13,19 +13,8 @@ app.on('ready', () => {
   Menu.setApplicationMenu(mainMenu)
 })
 
-function createAddWindow() {
-  addWindow = new BrowserWindow({
-    width: 300,
-    height: 200,
-    title: 'Add New Todo'
-  })
-  addWindow.loadURL(`file://${__dirname}/add.html`)
-  addWindow.on('closed', () => addWindow = null)
-}
-
 ipcMain.on('todo:add', (event, todo) => {
   mainWindow.webContents.send('todo:add', todo)
-  addWindow.close()
 })
 
 const menuTemplate = [
@@ -47,7 +36,7 @@ const menuTemplate = [
 ]
   // Mac check
 if (process.platform === 'darwin') {
-  menuTemplate.unshift({})
+  menuTemplate.unshift({label: ''})
 }
 
 if (process.env.NODE_ENV !== 'production') {
