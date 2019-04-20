@@ -12,9 +12,16 @@ app.on('ready', () => {
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
 })
-
+const list = []
 ipcMain.on('todo:add', (event, todo) => {
-  mainWindow.webContents.send('todo:add', todo)
+  list.push(todo)
+  mainWindow.webContents.send('todo:add', list)
+})
+
+ipcMain.on('listClear', (event) => {
+  while(list.length > 0) {
+    list.pop()
+  }
 })
 
 const menuTemplate = [

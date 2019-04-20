@@ -12,14 +12,17 @@ document.getElementById('addForm').addEventListener('submit', (event) => {
   }
 })
 
-ipcRenderer.on('todo:add', (event, todo) => {
-  const li = document.createElement('li')
-  const text = document.createTextNode(todo)
-
-  li.appendChild(text)
-  document.getElementById('list').appendChild(li)
+ipcRenderer.on('todo:add', (event, list) => {
+  document.getElementById('list').innerHTML = ''
+  list.forEach((todo) => {
+    const li = document.createElement('li')
+    const text = document.createTextNode(todo)
+    li.appendChild(text)
+    document.getElementById('list').appendChild(li)
+  })
 })
 
 function clearList() {
   document.getElementById('list').innerHTML = ''
+  ipcRenderer.send('listClear')
 }
