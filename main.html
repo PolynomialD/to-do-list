@@ -3,13 +3,13 @@
 <head>
 </head>
 <body>
-    <form>
-        <div>
-          <label>Enter new Todo</label>
-          <input autofocus />
-        </div>
-        <button type="submit">Add</button>
-      </form>
+  <form id="addForm">
+    <div>
+      <label>Enter new Todo</label>
+      <input id="addInput" autofocus />
+    </div>
+    <button type="submit">Add</button>
+  </form>
     
   <h1>todo list</h1>
   <ul></ul>
@@ -18,11 +18,13 @@
     const electron = require('electron')
     const { ipcRenderer } = electron
 
-    document.querySelector('form').addEventListener('submit', (event) => {
+    document.getElementById('addForm').addEventListener('submit', (event) => {
       event.preventDefault()
 
-      const value = document.querySelector('input').value
+      const addInput = document.getElementById('addInput')
+      const value = addInput.value
       ipcRenderer.send('todo:add', value)
+      addInput.value = ""
     })
 
     ipcRenderer.on('todo:add', (event, todo) => {
