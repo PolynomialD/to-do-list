@@ -19,3 +19,7 @@ ipcRenderer.on('todo:add', (event, todo) => {
   li.appendChild(text)
   document.getElementById('list').appendChild(li)
 })
+
+function clearList() {
+  document.getElementById('list').innerHTML = ''
+}
