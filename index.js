@@ -21,9 +21,6 @@ const menuTemplate = [
   {
     label: 'file',
     submenu: [
-      { label: 'New Todo',
-        click() { createAddWindow() }
-      },
       {
         label:'quit',
         accelerator: process.platform === 'darwin' ? 'Command+Q' : 'Ctrl+Q',
