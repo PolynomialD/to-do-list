@@ -12,6 +12,7 @@ app.on('ready', () => {
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
 })
+
 const list = []
 ipcMain.on('todo:add', (event, todo) => {
   list.push(todo)

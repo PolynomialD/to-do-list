@@ -19,6 +19,8 @@ ipcRenderer.on('todo:add', (event, list) => {
     const text = document.createTextNode(todo)
     li.appendChild(text)
     document.getElementById('list').appendChild(li)
+
+    
   })
 })
 
