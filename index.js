@@ -4,6 +4,11 @@ const { app, BrowserWindow, Menu, ipcMain } = electron
 
 let mainWindow
 
+const list = [
+  'bob',
+  'ste',
+  'kev'
+]
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
@@ -11,9 +16,15 @@ app.on('ready', () => {
 
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
+  mainWindow.webContents.send('todo:updated', list)
+
 })
 
-const list = []
+ipcMain.on('todo:editItem', (event, data) => {
+  list[data.index] = data.value
+  mainWindow.webContents.send('todo:updated', list)
+})
+
 ipcMain.on('todo:add', (event, todo) => {
   list.push(todo)
   mainWindow.webContents.send('todo:updated', list)

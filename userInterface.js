@@ -12,6 +12,17 @@ document.getElementById('addForm').addEventListener('submit', (event) => {
   }
 })
 
+function editItem(index) {
+  const value = document.getElementById(`newInput-${index}`).value
+  const data = {
+    index: index,
+    value: value
+  }
+  ipcRenderer.send('todo:editItem', data)
+
+
+}
+
 function deleteItem(index) {
   ipcRenderer.send('todo:deleteItem', index)
 }
@@ -24,10 +35,21 @@ ipcRenderer.on('todo:updated', (event, list) => {
     deleteButton.appendChild(buttonText)
     deleteButton.setAttribute('onclick', `deleteItem(${index})`)
 
+
+    const newInput = document.createElement('input')
+    newInput.setAttribute('id', `newInput-${index}`)
+
+    const saveButton = document.createElement('button')
+    const saveButtonText = document.createTextNode('save')
+    saveButton.appendChild(saveButtonText)
+    saveButton.setAttribute('onclick', `editItem(${index})`)
+
     const li = document.createElement('li')
     const text = document.createTextNode(todo)
     li.appendChild(text)
     li.appendChild(deleteButton)
+    li.appendChild(saveButton)
+    li.appendChild(newInput)
     document.getElementById('list').appendChild(li)
 
     
