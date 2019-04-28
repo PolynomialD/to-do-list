@@ -39,27 +39,29 @@ ipcRenderer.on('todo:updated', (event, list) => {
     deleteButton.appendChild(buttonText)
     deleteButton.setAttribute('onclick', `deleteItem(${index})`)
 
-
-    const newInput = document.createElement('input')
-    newInput.setAttribute('id', `newInput-${index}`)
-
-    const saveButton = document.createElement('button')
-    const saveButtonText = document.createTextNode('save')
-    saveButton.appendChild(saveButtonText)
-    saveButton.setAttribute('onclick', `editItem(${index})`)
-
-    const doneButton = document.createElement('button')
-    const doneButtonText = document.createTextNode('done')
-    doneButton.appendChild(doneButtonText)
-    doneButton.setAttribute('onclick', `markDone(${index})`)
-
     const li = document.createElement('li')
     const text = document.createTextNode(`${todo.name} (${todo.status})`)
     li.appendChild(text)
     li.appendChild(deleteButton)
-    li.appendChild(saveButton)
-    li.appendChild(newInput)
-    li.appendChild(doneButton)
+
+    if (todo.status !== 'done') {
+      const newInput = document.createElement('input')
+      newInput.setAttribute('id', `newInput-${index}`)
+
+      const saveButton = document.createElement('button')
+      const saveButtonText = document.createTextNode('save')
+      saveButton.appendChild(saveButtonText)
+      saveButton.setAttribute('onclick', `editItem(${index})`)
+
+      const doneButton = document.createElement('button')
+      const doneButtonText = document.createTextNode('done')
+      doneButton.appendChild(doneButtonText)
+      doneButton.setAttribute('onclick', `markDone(${index})`)
+      li.appendChild(saveButton)
+      li.appendChild(newInput)
+      li.appendChild(doneButton)
+    }
+
     document.getElementById('list').appendChild(li)
 
     
