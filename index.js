@@ -5,9 +5,10 @@ const { app, BrowserWindow, Menu, ipcMain } = electron
 let mainWindow
 
 const list = [
-  'bob',
-  'ste',
-  'kev'
+  { 
+    name: 'bob', 
+    status: 'undone'
+  }
 ]
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
@@ -20,13 +21,22 @@ app.on('ready', () => {
 
 })
 
+ipcMain.on('todo:markDone', (event, index) => {
+  list[index].status = 'done'
+  mainWindow.webContents.send('todo:updated', list)
+})
+
 ipcMain.on('todo:editItem', (event, data) => {
-  list[data.index] = data.value
+  list[data.index].name = data.value
   mainWindow.webContents.send('todo:updated', list)
 })
 
 ipcMain.on('todo:add', (event, todo) => {
-  list.push(todo)
+  const item = {
+    name: todo,
+    status: 'undone'
+  }
+  list.push(item)
   mainWindow.webContents.send('todo:updated', list)
 })
 

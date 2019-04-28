@@ -18,9 +18,13 @@ function editItem(index) {
     index: index,
     value: value
   }
-  ipcRenderer.send('todo:editItem', data)
+  if(value !== '') {
+    ipcRenderer.send('todo:editItem', data)
+  }
+}
 
-
+function markDone(index) {
+  ipcRenderer.send('todo:markDone', index)
 }
 
 function deleteItem(index) {
@@ -44,12 +48,18 @@ ipcRenderer.on('todo:updated', (event, list) => {
     saveButton.appendChild(saveButtonText)
     saveButton.setAttribute('onclick', `editItem(${index})`)
 
+    const doneButton = document.createElement('button')
+    const doneButtonText = document.createTextNode('done')
+    doneButton.appendChild(doneButtonText)
+    doneButton.setAttribute('onclick', `markDone(${index})`)
+
     const li = document.createElement('li')
-    const text = document.createTextNode(todo)
+    const text = document.createTextNode(`${todo.name} (${todo.status})`)
     li.appendChild(text)
     li.appendChild(deleteButton)
     li.appendChild(saveButton)
     li.appendChild(newInput)
+    li.appendChild(doneButton)
     document.getElementById('list').appendChild(li)
 
     
