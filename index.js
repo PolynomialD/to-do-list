@@ -16,7 +16,13 @@ app.on('ready', () => {
 const list = []
 ipcMain.on('todo:add', (event, todo) => {
   list.push(todo)
-  mainWindow.webContents.send('todo:add', list)
+  mainWindow.webContents.send('todo:updated', list)
+})
+
+ipcMain.on('todo:deleteItem', (event, index) => {
+  list.splice(index, 1)
+  mainWindow.webContents.send('todo:updated', list)
+
 })
 
 ipcMain.on('listClear', (event) => {

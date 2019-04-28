@@ -12,12 +12,22 @@ document.getElementById('addForm').addEventListener('submit', (event) => {
   }
 })
 
-ipcRenderer.on('todo:add', (event, list) => {
+function deleteItem(index) {
+  ipcRenderer.send('todo:deleteItem', index)
+}
+
+ipcRenderer.on('todo:updated', (event, list) => {
   document.getElementById('list').innerHTML = ''
-  list.forEach((todo) => {
+  list.forEach((todo, index) => {
+    const deleteButton = document.createElement('button')
+    const buttonText = document.createTextNode('delete')
+    deleteButton.appendChild(buttonText)
+    deleteButton.setAttribute('onclick', `deleteItem(${index})`)
+
     const li = document.createElement('li')
     const text = document.createTextNode(todo)
     li.appendChild(text)
+    li.appendChild(deleteButton)
     document.getElementById('list').appendChild(li)
 
     
