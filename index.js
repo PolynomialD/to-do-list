@@ -11,16 +11,16 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
   fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
-    if (err) throw err 
-      console.log(data)  
-      savedList = JSON.parse(data)  
-      if(savedList) list = savedList
-  })
+    // if (err) throw err 
+      console.log(data)    
+      if(JSON.parse(data)) {list = JSON.parse(data)}
+      
+    })
     mainWindow.on('closed', () => {
       fs.writeFile('/tmp/todoSaves', JSON.stringify(list), function(err) {
-        if(err) throw err       
-        console.log('The file was saved')
+        // if(err) throw err       
       })
+      console.log('The file was saved')
       app.quit()
     })
 
