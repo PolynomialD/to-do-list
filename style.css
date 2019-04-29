@@ -1,0 +1,21 @@
+h1 {font-size: 20px;}
+
+#addForm {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+#addButton {
+  color: green;
+  font-size: 16px;
+}
+
+#clearButton {
+  color: red;
+  font-size: 16px;
+}

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <form id="addForm">
@@ -8,9 +11,9 @@
       <label>Enter new Todo</label>
       <input id="addInput" autofocus />
     </div>
-    <button type="submit">Add</button>
+    <button id="addButton" type="submit">Add</button>
   </form>
-  <button onclick="clearList()">Clear</button>
+  <button id="clearButton" onclick="clearList()">Clear</button>
   <h1>todo list</h1>
   <ul id="list"></ul>
 
