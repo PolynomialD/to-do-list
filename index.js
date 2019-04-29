@@ -5,7 +5,7 @@ const { app, BrowserWindow, Menu, ipcMain } = electron
 
 let mainWindow
 
-const list = []
+let list = []
 
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
@@ -13,7 +13,8 @@ app.on('ready', () => {
   fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
     if (err) throw err 
       console.log(data)  
-      list.push(JSON.parse(data))  
+      savedList = JSON.parse(data)  
+      if(savedList) list = savedList
   })
     mainWindow.on('closed', () => {
       fs.writeFile('/tmp/todoSaves', JSON.stringify(list), function(err) {
@@ -26,7 +27,6 @@ app.on('ready', () => {
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
   mainWindow.webContents.send('todo:updated', list)
-
 })
 
 ipcMain.on('todo:markDone', (event, index) => {
