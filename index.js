@@ -1,19 +1,27 @@
 const electron = require('electron')
+const fs = require('fs')
 
 const { app, BrowserWindow, Menu, ipcMain } = electron
 
 let mainWindow
 
-const list = [
-  { 
-    name: 'bob', 
-    status: 'undone'
-  }
-]
+const list = []
+
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
-  mainWindow.on('closed', () => app.quit())
+  fs.readFile('/tmp/todoSaves','utf8', (err, data) => {
+    if (err) throw err 
+      console.log(data)  
+      list.push(data)  
+  })
+    mainWindow.on('closed', () => {
+      fs.writeFile('/tmp/todoSaves', list, function(err) {
+        if(err) throw err       
+        console.log('The file was saved')
+      })
+      app.quit()
+    })
 
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
@@ -66,7 +74,7 @@ const menuTemplate = [
     ]
   }
 ]
-  // Mac check
+
 if (process.platform === 'darwin') {
   menuTemplate.unshift({label: ''})
 }
