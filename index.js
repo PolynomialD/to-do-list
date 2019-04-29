@@ -10,13 +10,13 @@ const list = []
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
-  fs.readFile('/tmp/todoSaves','utf8', (err, data) => {
+  fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
     if (err) throw err 
       console.log(data)  
-      list.push(data)  
+      list.push(JSON.parse(data))  
   })
     mainWindow.on('closed', () => {
-      fs.writeFile('/tmp/todoSaves', list, function(err) {
+      fs.writeFile('/tmp/todoSaves', JSON.stringify(list), function(err) {
         if(err) throw err       
         console.log('The file was saved')
       })
