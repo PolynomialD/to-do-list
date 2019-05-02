@@ -10,11 +10,11 @@ let list = []
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
-  fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
+  if (fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
     // if (err) throw err 
       console.log(data)    
       if(JSON.parse(data)) {list = JSON.parse(data)}   
-    })
+    }))
     mainWindow.on('closed', () => {
       fs.writeFile('/tmp/todoSaves', JSON.stringify(list), function(err) {
         // if(err) throw err       
@@ -38,9 +38,10 @@ ipcMain.on('todo:editItem', (event, data) => {
   mainWindow.webContents.send('todo:updated', list)
 })
 
-ipcMain.on('todo:add', (event, todo) => {
+ipcMain.on('todo:add', (event, todo, time) => {
   const item = {
     name: todo,
+    timeframe: time,
     status: 'undone'
   }
   list.push(item)

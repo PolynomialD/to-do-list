@@ -10,6 +10,13 @@ document.getElementById('addForm').addEventListener('submit', (event) => {
     ipcRenderer.send('todo:add', value)
     addInput.value = ""
   }
+  const timeInput = document.getElementById('timeInput')
+  const timeValue = timeInput.value
+  if(timeValue !== '') {
+    ipcRenderer.send('todo:add', timeValue)
+    timeInput.value = ""
+  }
+  
 })
 
 function editItem(index) {
@@ -40,7 +47,7 @@ ipcRenderer.on('todo:updated', (event, list) => {
     deleteButton.setAttribute('onclick', `deleteItem(${index})`)
 
     const li = document.createElement('li')
-    const text = document.createTextNode(`${todo.name} (${todo.status})`)
+    const text = document.createTextNode(`${todo.name} ${todo.time} (${todo.status})`)
     li.appendChild(text)
     li.appendChild(deleteButton)
 
