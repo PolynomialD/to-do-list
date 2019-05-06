@@ -3,6 +3,8 @@ const fs = require('fs')
 
 const { app, BrowserWindow, Menu, ipcMain } = electron
 
+const saves = 'saves.json'
+
 let mainWindow
 
 let list = []
@@ -10,26 +12,40 @@ let list = []
 app.on('ready', () => {
   mainWindow = new BrowserWindow({})
   mainWindow.loadURL(`file://${__dirname}/main.html`)
-  if (fs.readFile('/tmp/todoSaves', 'utf8', (err, data) => {
-    // if (err) throw err 
-      console.log(data)    
-      if(JSON.parse(data)) {list = JSON.parse(data)}   
-    }))
-    mainWindow.on('closed', () => {
-      fs.writeFile('/tmp/todoSaves', JSON.stringify(list), function(err) {
-        // if(err) throw err       
-      })
-      console.log('The file was saved')
-      app.quit()
+  fs.readFile(saves, 'utf8', (err, data) => {
+    try {
+      if (err) throw err 
+      list = (data) ? JSON.parse(data) : []
+    } catch (error) {
+      list = []
+    }
+    
+    console.log(data)
+  })
+
+  mainWindow.on('closed', () => {
+    fs.writeFile(saves, JSON.stringify(list, null, 2), (err) => {
+      if(err) {
+        console.log(err)
+      } else {
+        console.log('The file was saved')
+      }       
     })
+    app.quit()
+  })
 
   const mainMenu = Menu.buildFromTemplate(menuTemplate)
   Menu.setApplicationMenu(mainMenu)
+})
+
+ipcMain.on('todo:loadList', () => {
   mainWindow.webContents.send('todo:updated', list)
 })
 
 ipcMain.on('todo:markDone', (event, index) => {
   list[index].status = 'done'
+
+  list[index].time.completed = + new Date()
   mainWindow.webContents.send('todo:updated', list)
 })
 
@@ -38,15 +54,22 @@ ipcMain.on('todo:editItem', (event, data) => {
   mainWindow.webContents.send('todo:updated', list)
 })
 
-ipcMain.on('todo:add', (event, todo, time) => {
-  const item = {
-    name: todo,
-    timeframe: time,
-    status: 'undone'
-  }
+ipcMain.on('todo:add', (event, todo) => {
+  const item = newItem(todo)
   list.push(item)
   mainWindow.webContents.send('todo:updated', list)
 })
+
+const newItem = (text) => {
+  return {
+    name: text,
+    status: 'undone',
+    time: {
+      started: + new Date(),
+      completed: null
+    }
+  }
+}
 
 ipcMain.on('todo:deleteItem', (event, index) => {
   list.splice(index, 1)
@@ -54,7 +77,7 @@ ipcMain.on('todo:deleteItem', (event, index) => {
 
 })
 
-ipcMain.on('listClear', (event) => {
+ipcMain.on('listClear', () => {
   while(list.length > 0) {
     list.pop()
   }

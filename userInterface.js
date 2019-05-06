@@ -1,6 +1,9 @@
 const electron = require('electron')
 const { ipcRenderer } = electron
 
+
+ipcRenderer.send('todo:loadList')
+
 document.getElementById('addForm').addEventListener('submit', (event) => {
   event.preventDefault()
 
@@ -47,7 +50,12 @@ ipcRenderer.on('todo:updated', (event, list) => {
     deleteButton.setAttribute('onclick', `deleteItem(${index})`)
 
     const li = document.createElement('li')
-    const text = document.createTextNode(`${todo.name} ${todo.time} (${todo.status})`)
+    const text = document.createTextNode(`${todo.name}`)
+
+    if (todo.status === 'done') {
+      li.setAttribute('class', 'text-muted')
+    }
+
     li.appendChild(text)
     li.appendChild(deleteButton)
 

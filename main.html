@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
   <form id="addForm">
@@ -13,9 +14,9 @@
       <label>Enter Time</label>
       <input id="timeValue"/>
     </div>
-    <button id="addButton" type="submit">Add</button>
+    <button id="addButton" type="submit" class="btn btn-outline-success">Add</button>
   </form>
-  <button id="clearButton" onclick="clearList()">Clear</button>
+  <button id="clearButton" class="btn btn-outline-danger" onclick="clearList()">Clear</button>
   <h1>todo list</h1>
   <ul id="list"></ul>
 

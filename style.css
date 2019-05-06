@@ -1,4 +1,4 @@
-h1 {font-size: 20px;}
+/* h1 {font-size: 20px;} */
 
 #addForm {
   text-align: center;
@@ -11,18 +11,8 @@ h1 {font-size: 20px;}
   box-sizing: border-box;
 }
 
-#addButton {
-  text-align: center;
-  color: green;
-  font-size: 16px;
-}
-
-#clearButton {
-  text-align: center;
-  color: red;
-  font-size: 16px;
-}
-
 #list {
-  list-style-type: circle;
+  list-style-type: none
 }
+
+
