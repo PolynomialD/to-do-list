@@ -8,18 +8,16 @@ document.getElementById('addForm').addEventListener('submit', (event) => {
   event.preventDefault()
 
   const addInput = document.getElementById('addInput')
-  const value = addInput.value
-  if(value !== '') {
-    ipcRenderer.send('todo:add', value)
-    addInput.value = ""
-  }
   const timeInput = document.getElementById('timeInput')
-  const timeValue = timeInput.value
-  if(timeValue !== '') {
-    ipcRenderer.send('todo:add', timeValue)
+  const todo = {
+    text: addInput.value,
+    time: timeInput.value
+  }
+  if(addInput.value !== '') {
+    ipcRenderer.send('todo:add', todo)
+    addInput.value = ""
     timeInput.value = ""
   }
-  
 })
 
 function editItem(index) {
@@ -51,12 +49,17 @@ ipcRenderer.on('todo:updated', (event, list) => {
 
     const li = document.createElement('li')
     const text = document.createTextNode(`${todo.name}`)
+    const timeStarted = document.createTextNode(`${todo.time.started}`)
+    const timeGoal = document.createTextNode(`Goal: ${todo.time.goal}`)
+
 
     if (todo.status === 'done') {
       li.setAttribute('class', 'text-muted')
     }
 
     li.appendChild(text)
+    li.appendChild(timeStarted)
+    li.appendChild(timeGoal)
     li.appendChild(deleteButton)
 
     if (todo.status !== 'done') {

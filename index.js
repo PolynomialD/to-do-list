@@ -60,12 +60,13 @@ ipcMain.on('todo:add', (event, todo) => {
   mainWindow.webContents.send('todo:updated', list)
 })
 
-const newItem = (text) => {
+const newItem = (todo) => {
   return {
-    name: text,
+    name: todo.text,
     status: 'undone',
     time: {
-      started: + new Date(),
+      started: new Date().toLocaleString(),
+      goal: todo.time,
       completed: null
     }
   }
