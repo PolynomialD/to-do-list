@@ -52,31 +52,42 @@ ipcRenderer.on('todo:updated', (event, list) => {
     const timeStarted = document.createTextNode(`${todo.time.started}`)
     const timeGoal = document.createTextNode(`Goal: ${todo.time.goal}`)
 
-
+    
     if (todo.status === 'done') {
       li.setAttribute('class', 'text-muted')
     }
-
-    li.appendChild(text)
+    
     li.appendChild(timeStarted)
+    li.appendChild(text)
     li.appendChild(timeGoal)
     li.appendChild(deleteButton)
-
+    
     if (todo.status !== 'done') {
       const newInput = document.createElement('input')
       newInput.setAttribute('id', `newInput-${index}`)
-
+      newInput.setAttribute('class', 'collapse')
+      
+      const editButton = document.createElement('button')
+      const editText = document.createTextNode('edit')
+      editButton.appendChild(editText)
+      editButton.setAttribute('data-toggle', 'collapse')
+      editButton.setAttribute('data-target', `#newInput-${index}`)
+      editButton.setAttribute('aria-expanded', 'false')
+      editButton.setAttribute('aria-controls', `#newInput-${index}`)
+      
       const saveButton = document.createElement('button')
       const saveButtonText = document.createTextNode('save')
       saveButton.appendChild(saveButtonText)
       saveButton.setAttribute('onclick', `editItem(${index})`)
-
+      
       const doneButton = document.createElement('button')
       const doneButtonText = document.createTextNode('done')
       doneButton.appendChild(doneButtonText)
       doneButton.setAttribute('onclick', `markDone(${index})`)
-      li.appendChild(saveButton)
+      
+      li.appendChild(editButton)
       li.appendChild(newInput)
+      li.appendChild(saveButton)
       li.appendChild(doneButton)
     }
 

@@ -45,7 +45,7 @@ ipcMain.on('todo:loadList', () => {
 ipcMain.on('todo:markDone', (event, index) => {
   list[index].status = 'done'
 
-  list[index].time.completed = + new Date()
+  list[index].time.completed = new Date()
   mainWindow.webContents.send('todo:updated', list)
 })
 
